@@ -1091,9 +1091,6 @@ controller.anyButton.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, Arlem)
     music.stopAllSounds()
 })
-controller.anyButton.onEvent(ControllerButtonEvent.Repeated, function () {
-    music.play(music.createSoundEffect(WaveShape.Sawtooth, 1, 1, 255, 172, 550, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.InBackground)
-})
 sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
     mySprite3 = sprites.create(img`
         ................................
