@@ -8,6 +8,12 @@ namespace SpriteKind {
     export const épé = SpriteKind.create()
     export const mappoint = SpriteKind.create()
 }
+controller.A.onEvent(ControllerButtonEvent.Released, function () {
+    tiles.setCurrentTilemap(tilemap`niveau1`)
+    sprites.destroy(mapSprite)
+    sprites.destroy(mapsprite2)
+    controller.moveSprite(Arlem)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.teleporteur, function (sprite, otherSprite) {
     game.showLongText("Zarlenem tu-es ou bon sens", DialogLayout.Full)
     tiles.setCurrentTilemap(tilemap`niveau4`)
@@ -534,11 +540,55 @@ controller.up.onEvent(ControllerButtonEvent.Released, function () {
         `)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    myMinimap = minimap.minimap(MinimapScale.Original, 0, 1)
+    tiles.setCurrentTilemap(tilemap`niveau5`)
+    mapSprite = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Projectile)
+    mapSprite.setPosition(76, 11)
+    myMinimap = minimap.minimap(MinimapScale.Quarter, 0, 1)
     minimap.includeSprite(myMinimap, Arlem)
     mapSprite.setImage(minimap.getImage(myMinimap))
-    pause(1000)
-    sprites.destroy(mapSprite)
+    mapSprite.setStayInScreen(true)
+    controller.moveSprite(Arlem, 0, 0)
+    tiles.setCurrentTilemap(tilemap`niveau7`)
+    mapsprite2 = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Projectile)
+    mapsprite2.setPosition(76, 111)
+    myMinimap = minimap.minimap(MinimapScale.Quarter, 0, 1)
+    mapsprite2.setImage(minimap.getImage(myMinimap))
+    mapsprite2.setStayInScreen(true)
+    controller.moveSprite(Arlem, 0, 0)
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -1401,6 +1451,7 @@ let épé_Arlem: Sprite = null
 let myMinimap: minimap.Minimap = null
 let statusbar: StatusBarSprite = null
 let Zarlenem: Sprite = null
+let mapsprite2: Sprite = null
 let mapSprite: Sprite = null
 let Arlem: Sprite = null
 music.play(music.createSong(assets.song`mySong`), music.PlaybackMode.LoopingInBackground)
@@ -1475,22 +1526,5 @@ controller.moveSprite(Arlem)
 scene.cameraFollowSprite(Arlem)
 tiles.placeOnTile(Arlem, tiles.getTileLocation(3, 3))
 tiles.placeOnTile(mySprite2, tiles.getTileLocation(29, 31))
-mapSprite = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `, SpriteKind.Projectile)
-mapSprite.setPosition(7, 8)
+scaling.scaleToPixels(Arlem, 30, ScaleDirection.Vertically, ScaleAnchor.Middle)
+scaling.scaleToPixels(Arlem, 22, ScaleDirection.Horizontally, ScaleAnchor.Middle)

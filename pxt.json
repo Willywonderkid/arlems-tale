@@ -5,7 +5,8 @@
         "device": "*",
         "controller": "*",
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.2",
-        "arcade-minimap": "github:microsoft/arcade-minimap#v0.6.1"
+        "arcade-minimap": "github:microsoft/arcade-minimap#v0.6.1",
+        "sprite-scaling": "*"
     },
     "files": [
         "main.blocks",
