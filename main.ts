@@ -5,7 +5,16 @@ namespace SpriteKind {
     export const enemy2 = SpriteKind.create()
     export const tuile = SpriteKind.create()
     export const object = SpriteKind.create()
+    export const épé = SpriteKind.create()
+    export const mappoint = SpriteKind.create()
 }
+controller.A.onEvent(ControllerButtonEvent.Repeated, function () {
+    myMinimap = minimap.minimap(MinimapScale.Original, 0, 1)
+    minimap.includeSprite(myMinimap, Arlem)
+    mapSprite.setImage(minimap.getImage(myMinimap))
+    pause(2000)
+    sprites.destroy(mapSprite)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.teleporteur, function (sprite, otherSprite) {
     game.showLongText("Zarlenem tu-es ou bon sens", DialogLayout.Full)
     tiles.setCurrentTilemap(tilemap`niveau4`)
@@ -264,6 +273,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.enemy2, function (sprite, otherS
         ...fff...ff6...
         ...222...222...
         `)
+    tiles.placeOnTile(Zarlenem, tiles.getTileLocation(31, 30))
+    statusbar = statusbars.create(20, 4, StatusBarKind.Health)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.object, function (sprite, otherSprite) {
+    sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+    music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.UntilDone)
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -750,37 +765,21 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.up.isPressed()
     )
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
-    sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
-    music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.UntilDone)
-})
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    mySprite = sprites.create(img`
-        . . . . . 8 . . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        . . . . 9 8 9 . . . . 
-        9 9 9 . 8 8 8 . 9 9 9 
-        9 6 9 9 9 9 9 9 9 6 9 
-        9 9 9 e e e e e 9 9 9 
-        . . . . e e e . . . . 
-        . . . . . e . . . . . 
-        . . . . . e . . . . . 
-        . . . . . 9 . . . . . 
-        . . . . 9 9 9 . . . . 
-        . . . . 9 9 9 . . . . 
-        . . . . 9 9 9 . . . . 
-        `, SpriteKind.Projectile)
+    épé_Arlem = sprites.create(img`
+        . . . . . . . 9 9 9 . . . . . . . . . . . . . . 
+        . . . . . . . 9 6 9 . . . . . . . . . . . . . . 
+        . . . . . . . 9 9 9 . . . . . . . . . . . . . . 
+        . . . . . . . e 9 . . . . . . . . . . . . . . . 
+        9 9 9 . . . e e 9 8 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        9 9 9 9 e e e e 9 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+        9 9 9 . . . e e 9 8 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        . . . . . . . e 9 . . . . . . . . . . . . . . . 
+        . . . . . . . 9 9 9 . . . . . . . . . . . . . . 
+        . . . . . . . 9 6 9 . . . . . . . . . . . . . . 
+        . . . . . . . 9 9 9 . . . . . . . . . . . . . . 
+        `, SpriteKind.épé)
+    épé_Arlem.follow(Arlem, 1000)
 })
 controller.down.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, Arlem)
@@ -1054,7 +1053,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, l
     game.showLongText("mon frère que fais-tu ici je te cherchais", DialogLayout.Bottom)
     tiles.setCurrentTilemap(tilemap`niveau6`)
     tiles.placeOnTile(Zarlenem, tiles.getTileLocation(29, 31))
-    tiles.placeOnTile(Arlem, tiles.getTileLocation(29, 31))
+    tiles.placeOnTile(Arlem, tiles.getTileLocation(25, 31))
 })
 controller.left.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, Arlem)
@@ -1089,7 +1088,6 @@ controller.left.onEvent(ControllerButtonEvent.Released, function () {
 })
 controller.anyButton.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, Arlem)
-    music.stopAllSounds()
 })
 sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
     mySprite3 = sprites.create(img`
@@ -1399,9 +1397,14 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 let cristal: Sprite = null
 let mySprite4: Sprite = null
 let mySprite3: Sprite = null
-let mySprite: Sprite = null
+let épé_Arlem: Sprite = null
+let statusbar: StatusBarSprite = null
 let Zarlenem: Sprite = null
+let myMinimap: minimap.Minimap = null
+let mapSprite: Sprite = null
 let Arlem: Sprite = null
+music.play(music.createSong(assets.song`mySong`), music.PlaybackMode.LoopingInBackground)
+tiles.setTilemap(tilemap`niveau1`)
 Arlem = sprites.create(img`
     .......22eee.......
     .....2222eeeee.....
@@ -1468,11 +1471,29 @@ let mySprite2 = sprites.create(img`
     ..........bb9bb.b99b8...........
     ..........bb9bb.bbbab...........
     `, SpriteKind.Enemy)
-tiles.setTilemap(tilemap`niveau1`)
-tiles.placeOnTile(Arlem, tiles.getTileLocation(2, 2))
+tiles.placeOnTile(Arlem, tiles.getTileLocation(3, 3))
 tiles.placeOnTile(mySprite2, tiles.getTileLocation(29, 31))
+mapSprite = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Projectile)
+mapSprite.setPosition(7, 8)
 controller.moveSprite(Arlem)
 scene.cameraFollowSprite(Arlem)
-forever(function () {
-    music.play(music.createSong(assets.song`mySong`), music.PlaybackMode.UntilDone)
+game.onUpdateInterval(100, function () {
+	
 })

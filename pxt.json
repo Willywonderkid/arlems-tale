@@ -2,7 +2,10 @@
     "name": "Arlem's Tale",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "controller": "*",
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.2",
+        "arcade-minimap": "github:microsoft/arcade-minimap#v0.6.1"
     },
     "files": [
         "main.blocks",
