@@ -8,13 +8,6 @@ namespace SpriteKind {
     export const épé = SpriteKind.create()
     export const mappoint = SpriteKind.create()
 }
-controller.A.onEvent(ControllerButtonEvent.Repeated, function () {
-    myMinimap = minimap.minimap(MinimapScale.Original, 0, 1)
-    minimap.includeSprite(myMinimap, Arlem)
-    mapSprite.setImage(minimap.getImage(myMinimap))
-    pause(2000)
-    sprites.destroy(mapSprite)
-})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.teleporteur, function (sprite, otherSprite) {
     game.showLongText("Zarlenem tu-es ou bon sens", DialogLayout.Full)
     tiles.setCurrentTilemap(tilemap`niveau4`)
@@ -539,6 +532,13 @@ controller.up.onEvent(ControllerButtonEvent.Released, function () {
         .....aff....aff....
         .....111....111....
         `)
+})
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    myMinimap = minimap.minimap(MinimapScale.Original, 0, 1)
+    minimap.includeSprite(myMinimap, Arlem)
+    mapSprite.setImage(minimap.getImage(myMinimap))
+    pause(1000)
+    sprites.destroy(mapSprite)
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -1398,9 +1398,9 @@ let cristal: Sprite = null
 let mySprite4: Sprite = null
 let mySprite3: Sprite = null
 let épé_Arlem: Sprite = null
+let myMinimap: minimap.Minimap = null
 let statusbar: StatusBarSprite = null
 let Zarlenem: Sprite = null
-let myMinimap: minimap.Minimap = null
 let mapSprite: Sprite = null
 let Arlem: Sprite = null
 music.play(music.createSong(assets.song`mySong`), music.PlaybackMode.LoopingInBackground)
@@ -1471,6 +1471,8 @@ let mySprite2 = sprites.create(img`
     ..........bb9bb.b99b8...........
     ..........bb9bb.bbbab...........
     `, SpriteKind.Enemy)
+controller.moveSprite(Arlem)
+scene.cameraFollowSprite(Arlem)
 tiles.placeOnTile(Arlem, tiles.getTileLocation(3, 3))
 tiles.placeOnTile(mySprite2, tiles.getTileLocation(29, 31))
 mapSprite = sprites.create(img`
@@ -1492,8 +1494,3 @@ mapSprite = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Projectile)
 mapSprite.setPosition(7, 8)
-controller.moveSprite(Arlem)
-scene.cameraFollowSprite(Arlem)
-game.onUpdateInterval(100, function () {
-	
-})
